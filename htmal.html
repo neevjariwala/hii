@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ffe6f2, #ffffff);
+            color: #d63384;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff1493;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        #yes-btn {
+            background: linear-gradient(45deg, #ff69b4, #ffb6c1);
+            color: white;
+            transform: scale(1);
+        }
+        #no-btn {
+            background: #f8f9fa;
+            color: #d63384;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        .heart {
+            font-size: 3em;
+            color: #ff1493;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .heart-anim {
+            position: absolute;
+            font-size: 30px;
+            color: #ff1493;
+            animation: floatUp 3s ease-in-out forwards;
+        }
+        @keyframes floatUp {
+            0% {
+                bottom: -50px;
+                opacity: 1;
+            }
+            100% {
+                bottom: 100vh;
+                opacity: 0;
+            }
+        }
+        .hidden {
+            display: none;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Thanks for opening -->
+    <div class="page active" id="page1">
+        <div class="container">
+            <div class="heart">❤️</div>
+            <h1>Thanks for Opening!</h1>
+            <p>It means the world to me. Are you interested to go ahead?</p>
+            <div class="buttons">
+                <button id="yes-btn1">Yes 💕</button>
+                <button id="no-btn1">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2: Will you be my Valentine? -->
+    <div class="page" id="page2">
+        <div class="container" id="proposal">
+            <div class="heart">❤️</div>
+            <h1>Will You Be My Valentine?</h1>
+            <p>I'm so glad you're here. What do you say?</p>
+            <div class="buttons">
+                <button id="yes-btn2">Yes 💕</button>
+                <button id="no-btn2">No</button>
+            </div>
+        </div>
+        <div class="container hidden" id="response">
+            <h1 id="message"></h1>
+        </div>
+    </div>
+
+    <!-- Page 3: Yay! You're my Valentine -->
+    <div class="page" id="page3">
+        <div class="container">
+            <div class="heart">❤️</div>
+            <h1>Yay! You're My Valentine! 💖</h1>
+            <p>Thanks for choosing me. I'm grateful to have a partner like you in my life.</p>
+            <p>Do you want to continue?</p>
+            <div class="buttons">
+                <button id="yes-btn3">Yes 💕</button>
+                <button id="no-btn3">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 4: Continue page -->
+    <div class="page" id="page4">
+        <div class="container">
+            <div class="heart">❤️</div>
+            <h1>Let's Continue Our Journey! 💕</h1>
+            <p>Let's restart our journey as before with the same love and respect for each other 💕</p>
+        </div>
+    </div>
+
+    <script>
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Page 1 interactions
+        let yesScale1 = 1;
+        const yesBtn1 = document.getElementById('yes-btn1');
+        const noBtn1 = document.getElementById('no-btn1');
+        noBtn1.addEventListener('click', () => {
+            yesScale1 += 0.2;
+            yesBtn1.style.transform = `scale(${yesScale1})`;
+        });
+        yesBtn1.addEventListener('click', () => showPage('page2'));
+
+        // Page 2 interactions
+        let yesScale2 = 1;
+        const yesBtn2 = document.getElementById('yes-btn2');
+        const noBtn2 = document.getElementById('no-btn2');
+        const proposal = document.getElementById('proposal');
+        const response = document.getElementById('response');
+        const message = document.getElementById('message');
+        noBtn2.addEventListener('click', () => {
+            yesScale2 += 0.2;
+            yesBtn2.style.transform = `scale(${yesScale2})`;
+        });
+        yesBtn2.addEventListener('click', () => {
+            proposal.classList.add('hidden');
+            response.classList.remove('hidden');
+            message.textContent = "Yay! You're my Valentine! ❤️";
+            // Heart animation
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart-anim');
+                    heart.textContent = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.bottom = '-50px';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
+            }
+            // Auto-redirect after animation
+            setTimeout(() => showPage('page3'), 3000);
+        });
+
+        // Page 3 interactions
+        let yesScale3 = 1;
+        const yesBtn3 = document.getElementById('yes-btn3');
+        const noBtn3 = document.getElementById('no-btn3');
+        noBtn3.addEventListener('click', () => {
+            yesScale3 += 0.2;
+            yesBtn3.style.transform = `scale(${yesScale3})`;
+        });
+        yesBtn3.addEventListener('click', () => showPage('page4'));
+    </script>
+</body>
+</html>
